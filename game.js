@@ -16,6 +16,20 @@ $(".btn").click(function() {
     animatePress(userChosenColour);
 });
 
+
+// Start the game
+
+document.addEventListener("keypress", nextSequence());
+
+while (var level=0) {
+
+    if (level === 0) {
+        $("#level-title").innerHTML = `LEVEL ${level}`;
+        nextSequence();
+    }
+    level++;
+}
+
 // create function to get the random color box
 
 function nextSequence(){
@@ -28,6 +42,9 @@ function nextSequence(){
 
     playSound(randomChosenColour);
 }
+
+
+
 
 
 // play the sounds
