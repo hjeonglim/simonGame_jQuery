@@ -1,9 +1,7 @@
-import random
-
 var buttonColours = ["red", "blue", "green", "yellow"];
 
 var gamePattern = [];
-var userclickedPattern = [];
+var userClickedPattern = [];
 
 
 // Detect click
@@ -29,7 +27,7 @@ function nextSequence(){
     $("#" + randomChosenColour).fadeIn(100).fadeOut(100).fadeIn(100);
 
     playSound(randomChosenColour);
-};
+}
 
 
 // play the sounds
@@ -37,7 +35,7 @@ function nextSequence(){
 function playSound(name) {
     var audio = new Audio("sounds/" + name + ".mp3");
     audio.play();
-};
+}
 
 // animate a flash to the button selected in randomChosenClour
 
@@ -48,4 +46,4 @@ function animatePress(currentColor) {
     setTimeout(function() {
         $("#" + currentColor).removeClass("pressed");
     }, 100);
-};
+}
