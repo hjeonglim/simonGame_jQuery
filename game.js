@@ -3,32 +3,49 @@ import random
 var buttonColours = ["red", "blue", "green", "yellow"];
 
 var gamePattern = [];
+var userclickedPattern = [];
+
+
+// Detect click
+
+$(".btn").click(function() {
+
+    var userChosenColour =$(this).attr("id");
+    userClickedPattern.push(userChosenColour);
+
+    playSound(userChosenColour);
+
+    animatePress(userChosenColour);
+});
+
+// create function to get the random color box
 
 function nextSequence(){
+
     var randomNumber = Math.floor(Math.random() * 4);
     var randomChosenColour = buttonColours[randomNumber];
     gamePattern.push(randomChosenColour);
+
+    $("#" + randomChosenColour).fadeIn(100).fadeOut(100).fadeIn(100);
+
+    playSound(randomChosenColour);
 };
 
 
-// Use jQuery to select the button with the same id as the randomChosenColour
+// play the sounds
 
-for (var i=0; i < $(".btn").length; i++) {
-    $(".btn")[i].on("click", function() {
+function playSound(name) {
+    var audio = new Audio("sounds/" + name + ".mp3");
+    audio.play();
+};
 
-    var buttonTypeo
-    });
-}
+// animate a flash to the button selected in randomChosenClour
 
-// Animate
+function animatePress(currentColor) {
 
-function buttonAnimation(currentButton) {
+    $("#" + currentColor).addClass("pressed");
 
-    var activeButton = $('.'+currentButton);
-
-    activeButton.classList.add("pressed");
-
-    setTimein(function() {
-        $("#green").fadeOut(500).fadeIn(500, blink);
-    });
-}
+    setTimeout(function() {
+        $("#" + currentColor).removeClass("pressed");
+    }, 100);
+};
