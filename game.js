@@ -1,13 +1,13 @@
-var buttonColours = ["red", "blue", "green", "yellow"];
 
+var buttonColours = ["red", "blue", "green", "yellow"];
 var gamePattern = [];
 var userClickedPattern = [];
 
-//You'll need a way to keep track of whether if the game has started or not, so you only call nextSequence() on the first keypress.
+
+// keep track of whether if the game has started or not
 var started = false;
 
-// Create a new variable called level and start at level 0
-
+// Create a new variable called level and set it 0 to started
 var level = 0;
 
 $(document).keypress(function() {
@@ -18,25 +18,48 @@ $(document).keypress(function() {
     }
 });
 
-// Detect click
+// Identify button clicked
+$(".btn").click(function(){
 
-$(".btn").click(function() {
-
-    var userChosenColour =$(this).attr("id");
+    var userChosenColour = $(this).attr("id");
     userClickedPattern.push(userChosenColour);
 
     playSound(userChosenColour);
     animatePress(userChosenColour);
+
+    checkAnswer(userClickedPattern.length-1);
 });
 
-// create function to get the random color box
+// Check answer
+function checkAnswer(currentLevel) {
+    if (gamePattern[currentLevel] === userClickedPattern[currentLevel]) {
+        if (userClickedPattern.length === gamePattern.length) {
+            setTimeout(function () {
+                nextSequence();
+            }, 1000);
+        }
+    } else {
+        playSound("wrong");
+        $("body").addClass("game-over");
+        $("#level-title").text("Game Over, Press Any Key to Restart");
 
-function nextSequence(){
+        setTimeout(function() {
+            $("body").removeClass("game-over");
+        }, 200);
+
+        startOver();
+    }
+}
+
+
+// Create a function generating a new random number between 0 and 3
+function nextSequence() {
+    userClickedPattern = [];
 
     // Increase the level by 1 every time nextSequence() is called
     level++;
 
-    // Update the h1 with this change in the value of Level
+    // update h1 as the level is increased
     $("#level-title").text("Level " + level);
 
     var randomNumber = Math.floor(Math.random() * 4);
@@ -47,17 +70,24 @@ function nextSequence(){
     playSound(randomChosenColour);
 }
 
-// play the sounds
+// Play sound
 function playSound(name) {
     var audio = new Audio("sounds/" + name + ".mp3");
     audio.play();
 }
 
-// animate a flash to the button selected in randomChosenClour
+// Create animation
+function animatePress(currentColour) {
+    $("#" + currentColour).addClass("pressed");
 
-function animatePress(currentColor) {
-    $("#" + currentColor).addClass("pressed");
     setTimeout(function() {
-        $("#" + currentColor).removeClass("pressed");
+        $("#" + currentColour).removeClass("pressed");
     }, 100);
+}
+
+// Start to play again
+function startOver() {
+    level = 0;
+    gamePattern = [];
+    started = false;
 }
