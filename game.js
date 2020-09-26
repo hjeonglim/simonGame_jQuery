@@ -1,25 +1,23 @@
-
 var buttonColours = ["red", "blue", "green", "yellow"];
 var gamePattern = [];
 var userClickedPattern = [];
 
-
-// keep track of whether if the game has started or not
+// Keep track of whether if the game has started or not
 var started = false;
 
-// Create a new variable called level and set it 0 to started
+// Level set it 0 to started and call nextSequence() when a keyboard key has been pressed
 var level = 0;
 
-$(document).keypress(function() {
+$(document).keypress(function(){
     if (!started) {
-        $("#level-title").text("Level" + level);
+        $("#level-title").text("Level " + level);
         nextSequence();
         started = true;
     }
 });
 
 // Identify button clicked
-$(".btn").click(function(){
+$(".btn").click(function() {
 
     var userChosenColour = $(this).attr("id");
     userClickedPattern.push(userChosenColour);
@@ -30,20 +28,20 @@ $(".btn").click(function(){
     checkAnswer(userClickedPattern.length-1);
 });
 
-// Check answer
+// Check answers
 function checkAnswer(currentLevel) {
     if (gamePattern[currentLevel] === userClickedPattern[currentLevel]) {
-        if (userClickedPattern.length === gamePattern.length) {
-            setTimeout(function () {
+        if (userClickedPattern.length === gamePattern.length){
+            setTimeout(function() {
                 nextSequence();
             }, 1000);
         }
     } else {
         playSound("wrong");
         $("body").addClass("game-over");
-        $("#level-title").text("Game Over, Press Any Key to Restart");
+        $("#level-title").text(`Game Over, You got to level ${level}. Press Any Key to Restart`);
 
-        setTimeout(function() {
+        setTimeout(function(){
             $("body").removeClass("game-over");
         }, 200);
 
@@ -51,17 +49,16 @@ function checkAnswer(currentLevel) {
     }
 }
 
-
-// Create a function generating a new random number between 0 and 3
-function nextSequence() {
+// Create nextSequence() using random
+function nextSequence(){
     userClickedPattern = [];
 
-    // Increase the level by 1 every time nextSequence() is called
+    // Increase the level by 1 every time nextSequence() is called and update h1 as the level is increased
     level++;
 
-    // update h1 as the level is increased
     $("#level-title").text("Level " + level);
 
+    // Increased
     var randomNumber = Math.floor(Math.random() * 4);
     var randomChosenColour = buttonColours[randomNumber];
     gamePattern.push(randomChosenColour);
@@ -71,22 +68,22 @@ function nextSequence() {
 }
 
 // Play sound
-function playSound(name) {
+function playSound(name){
     var audio = new Audio("sounds/" + name + ".mp3");
     audio.play();
 }
 
-// Create animation
-function animatePress(currentColour) {
+// Show the sequence to the user with animations and sounds
+function animatePress(currentColour){
     $("#" + currentColour).addClass("pressed");
 
-    setTimeout(function() {
-        $("#" + currentColour).removeClass("pressed");
+    setTimeout(function(){
+        $("#" + currentColour).removeClass("pressed")
     }, 100);
 }
 
-// Start to play again
-function startOver() {
+// Play again
+function startOver(){
     level = 0;
     gamePattern = [];
     started = false;
